@@ -25,7 +25,7 @@ The 28 benchmarks can be divided into 8 groups:
 - **bashbench**, **ashbench** (shell in `busybox`), **dashbench**: 5M loop of a simple test
 
 ### 2. calculation benchmarks
-- **bcbench**: calculate and verify pi to 5k places
+- **bcbench**: calculate and verify the number pi using `bc` to 5k places
 - **javabench**: runtime of Java of [Scimark 2.0](https://math.nist.gov/scimark2/download_java.html) with the `-large` switch
 - **lammpsbench**: simple Molecular Dynamics simulation of a Cu crystal in [LAMMPS](https://lammps.sandia.gov/)
 
