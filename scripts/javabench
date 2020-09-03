@@ -1,0 +1,31 @@
+#!/bin/bash
+source scripts/functions.sh
+JAVA="java"
+#JAVA="/opt/openjdk-bin-11.0.3_p7/bin/java"
+#JAVA="/opt/icedtea-bin-3.10.0/bin/java"
+#JAVA="/usr/lib64/openjdk-11/bin/java"
+#JAVA="/usr/lib64/icedtea8/bin/java"
+#JAVA="/home/fik/jdk-12.0.1+12-jre/bin/java"
+
+#sudo eselect java-vm list
+
+echo -e -n "Java:   \t"
+
+
+cd downloads/
+if [ ! -f scimark2lib.jar ] ; then
+        wget https://math.nist.gov/scimark2/scimark2lib.jar
+fi
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ($JAVA -cp scimark2lib.jar jnt.scimark2.commandline -large >/dev/null) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ..
+SwitchTo ondemand

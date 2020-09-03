@@ -1,0 +1,29 @@
+#!/bin/bash
+source scripts/functions.sh
+NORM="normalize"
+TMP2=$(mktemp)
+echo -n -e "Normalize: \t"
+
+cd downloads/
+if [ ! -f pts-trondheim-3.wav ] ; then
+	wget http://www.phoronix-test-suite.com/benchmark-files/pts-trondheim-wav-3.tar.gz
+	tar xf pts-trondheim-wav-3.tar.gz
+	rm pts-trondheim-wav-3.tar.gz
+	rm wav-license.txt
+fi
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	cp pts-trondheim-3.wav $TMP2
+	time -p ( $NORM -q $TMP2 ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+rm $TMP2
+cd ..
+SwitchTo ondemand
+

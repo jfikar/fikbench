@@ -1,0 +1,21 @@
+#!/bin/bash
+export RUNS=20
+SECONDS=0
+LIST="gcc clang lld glibc icedtea busybox bash dash bc gzip pigz eix python flac lame xz-utils zopfli mplayer vorbis-tools normalize libjpeg-turbo lammps lzo:2 lzop lz4 ccache libpng:0 zlib optipng zstd"
+echo "**************************************************************************************************************" >> results.txt
+date >> results.txt
+equery s $LIST >> results.txt
+
+echo "Runs " $RUNS
+LIST="bashbench ashbench dashbench bcbench javabench lammpsbench lzopbench lz4bench gzipbench pigzbench zopflibench pigzzopflibench xzbench lrzipbench zstdbench gccbench ccachebench clangbench eixbench emergebench normalizebench flacbench oggbench lamebench mencoderbench jpegtransbench optipngbench zopflipngbench"
+
+echo -e "Bench: \t \t \t real \t \t user" >> results.txt
+echo "-------------------------------------------------------" >> results.txt
+for I in $LIST
+do
+	echo "Running test " ${I}
+	PROGRESS=0 scripts/$I >> results.txt
+done
+unset RUNS
+echo "Elapsed time" $SECONDS "seconds" | tee -a results.txt
+echo "**************************************************************************************************************" >> results.txt

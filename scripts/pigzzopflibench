@@ -1,0 +1,32 @@
+#!/bin/bash
+source scripts/functions.sh
+#GZIP="/bin/gzip"
+GZIP="pigz"
+TMP2=$(mktemp)
+TMP3=$(mktemp)
+echo -n -e "Pigz.zopfli: \t"
+
+cd downloads/
+if [ ! -f ${KERNEL} ] ; then
+        wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
+fi
+cat ${KERNEL} | xz -d > "${TMP3}"
+cd ..
+#just cut first 20MB, otherwise takes too long
+dd if="${TMP3}" bs=1M count=20 of="${TMP2}" 2>/dev/null
+rm "${TMP3}"
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( cat $TMP2 | $GZIP -11 -I 1 -c > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+rm $TMP2
+
+SwitchTo ondemand
+

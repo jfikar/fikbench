@@ -1,0 +1,26 @@
+#!/bin/bash
+source scripts/functions.sh
+LAME="lame"
+#LAME="/home/fik/lame-3.99.5/frontend/lame"
+echo -n -e "Lame:   \t"
+
+cd downloads/
+if [ ! -f pts-trondheim-3.wav ] ; then
+	wget http://www.phoronix-test-suite.com/benchmark-files/pts-trondheim-wav-3.tar.gz
+	tar xf pts-trondheim-wav-3.tar.gz
+	rm pts-trondheim-wav-3.tar.gz
+	rm wav-license.txt
+fi
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( $LAME -h --quiet pts-trondheim-3.wav /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ..
+SwitchTo ondemand

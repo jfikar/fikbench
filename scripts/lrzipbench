@@ -1,0 +1,29 @@
+#!/bin/bash
+source scripts/functions.sh
+LRZIP="lrzip"
+TMP2=$(mktemp)
+TMP3=$(mktemp)
+echo -n -e "Lrzip:  \t"
+
+cd downloads/
+if [ ! -f ${KERNEL} ] ; then
+        wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
+fi
+cat ${KERNEL} | xz -d > "${TMP3}"
+cd ..
+#just cut first 150MB, otherwise takes too long
+dd if="${TMP3}" bs=1M count=150 of="${TMP2}" 2>/dev/null
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	rm $TMP3
+	time -p ( $LRZIP -q $TMP2 -o $TMP3 > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+rm $TMP2 $TMP3
+SwitchTo ondemand

@@ -1,0 +1,19 @@
+#!/bin/bash
+source scripts/functions.sh
+EXE="optipng"
+echo -n -e "Optipng: \t"
+cd downloads/
+if [ ! -f 625px-NewTux.svg.png ] ; then
+	wget https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/NewTux.svg/625px-NewTux.svg.png
+fi
+
+SwitchTo performance
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( $EXE -fix -preserve -strip all -simulate -o7 -zm1-9 625px-NewTux.svg.png ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ..
+SwitchTo ondemand

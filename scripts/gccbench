@@ -1,0 +1,49 @@
+#!/bin/bash
+source scripts/functions.sh
+
+export PATH=$(echo "$PATH" | sed 's/:\/usr\/lib\/ccache\/bin//')
+#export PATH=/usr/lib/ccache/bin:$PATH
+#echo $PATH
+#JOBS=$(OMP_NUM_THREADS= nproc)
+TMP2=$(mktemp -d)
+echo -e -n "Gcc:    \t"
+RETURN=$(pwd)
+cd downloads/
+
+if [ ! -f ${KERNEL} ] ; then
+        wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
+fi
+
+
+#echo $PATH
+#echo $(which gcc)
+
+cd ${TMP2}
+tar xf ${RETURN}/downloads/${KERNEL}
+CheckReturnCode
+
+cd $(basename ${KERNEL} .tar.xz)
+make -j $JOBS defconfig > /dev/null
+CheckReturnCode
+
+
+#clang10 + kernel 5.8 defconfig workaround
+sed -i 's/CONFIG_RETPOLINE=y/# CONFIG_RETPOLINE is not set/g' .config
+sed -i 's/CONFIG_UNWINDER_ORC=y/# CONFIG_UNWINDER_ORC is not set/g' .config
+sed -i 's/# CONFIG_UNWINDER_FRAME_POINTER is not set/CONFIG_UNWINDER_FRAME_POINTER=y/g' .config
+sed -i 's/CONFIG_STACK_VALIDATION=y/# CONFIG_STACK_VALIDATION is not set/g' .config
+
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	make -j $JOBS clean > /dev/null
+	time -p ( make -j $JOBS  > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ${RETURN}
+rm -rf ${TMP2}
+SwitchTo ondemand

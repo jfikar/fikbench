@@ -1,0 +1,25 @@
+#!/bin/bash
+source scripts/functions.sh
+EXE="zopflipng"
+
+TMP2=$(mktemp)
+echo -n -e "Zopfli.png: \t"
+cd downloads/
+
+if [ ! -f 625px-NewTux.svg.png ] ; then
+	wget https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/NewTux.svg/625px-NewTux.svg.png
+fi
+
+SwitchTo performance
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( ${EXE} -m --lossy_8bit --lossy_transparent -y --always_zopflify 625px-NewTux.svg.png ${TMP2} > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+rm ${TMP2}
+cd ..
+
+SwitchTo ondemand
+

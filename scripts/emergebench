@@ -1,0 +1,14 @@
+#!/bin/bash
+source scripts/functions.sh
+echo -n -e "Emerge: \t"
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( emerge -uDvpU --with-bdeps=y @world >/dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+SwitchTo ondemand

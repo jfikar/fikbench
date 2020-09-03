@@ -1,0 +1,14 @@
+#!/bin/bash
+source scripts/functions.sh
+echo -n -e "Eix:    \t"
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( sudo eix-update -q ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+SwitchTo ondemand

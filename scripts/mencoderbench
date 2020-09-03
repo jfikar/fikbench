@@ -1,0 +1,24 @@
+#!/bin/bash
+source scripts/functions.sh
+MENCODER="mencoder"
+echo -n -e "Mencoder: \t"
+
+cd downloads/
+if [ ! -f pts-trondheim.avi ] ; then
+	wget http://www.phoronix-test-suite.com/benchmark-files/pts-trondheim-avi.tar.bz2
+	tar xf pts-trondheim-avi.tar.bz2
+	rm pts-trondheim-avi.tar.bz2
+	chmod -x pts-trondheim.avi
+fi
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( $MENCODER -really-quiet pts-trondheim.avi -o /dev/null -ovc lavc -oac copy -lavcopts vcodec=mpeg4:mbd=2:trell=1:v4mv=1:vstrict=1 ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ..
+SwitchTo ondemand

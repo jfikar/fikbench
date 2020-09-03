@@ -1,0 +1,26 @@
+#!/bin/bash
+source scripts/functions.sh
+JPGTRAN="jpegtran"
+echo -n -e  "Jpegtran: \t"
+RETURN=$(pwd)
+cd downloads/
+if [ ! -f pts-trondheim-photos.tar.gz ] ; then
+	wget http://www.phoronix-test-suite.com/benchmark-files/pts-trondheim-photos.tar.gz
+fi
+
+SwitchTo performance
+TMP2=$(mktemp -d)
+cd ${TMP2}
+tar xf ${RETURN}/downloads/pts-trondheim-photos.tar.gz
+cd pts-trondheim-photos
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p (for param in " " "-optimize" "-progressive" "-arithmetic" "-arithmetic -progressive";do for j in *.JPG; do ${JPGTRAN} ${param} "${j}" > /dev/null;CheckReturnCode;done;done) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+cd ${RETURN}
+rm -rf ${TMP2}
+SwitchTo ondemand
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+source scripts/functions.sh
+#gcc -c -Q -O2 -ftree-vectorize --help=optimizers > o2f
+
+TMP2=$(mktemp)
+
+echo -n -e "Bc:     \t"
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+        #printf "."
+        ProgressBar ${i} ${RUNS}
+        i=$(($i+1))
+        time -p ( echo "scale=5000; a(1)*4" | bc -l | sha512sum > $TMP2 ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+	if [[ $(cat $TMP2)  != "bf8cc0b2336070d3de024338357cd12079445a57183a8dac9456d52e4491f7662cfa6f4e09b2d35761003735e468215797a5d1394f1c9289afdaee4a29a5266d  -" ]]; then
+      		echo 'Wrong result!'
+	fi
+done
+rm $TMP2
+SwitchTo ondemand
+

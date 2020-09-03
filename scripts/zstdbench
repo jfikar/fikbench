@@ -1,0 +1,27 @@
+#!/bin/bash
+source scripts/functions.sh
+ZSTD="zstd"
+
+TMP2=$(mktemp)
+echo -n -e "Zstd:   \t"
+
+cd downloads/
+if [ ! -f ${KERNEL} ] ; then
+        wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
+fi
+cat ${KERNEL} | xz -d > "${TMP2}"
+cd ..
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( cat $TMP2 | $ZSTD -q -T${JOBS} > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+	#zstd -T${JOBS} or -T0 or zstdmt, but they do not use HT and are slower
+done
+rm $TMP2
+
+SwitchTo ondemand

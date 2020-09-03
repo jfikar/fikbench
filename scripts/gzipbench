@@ -1,0 +1,27 @@
+#!/bin/bash
+source scripts/functions.sh
+GZIP="/bin/gzip"
+#GZIP="pigz"
+
+TMP2=$(mktemp)
+echo -n -e "Gzip:   \t"
+
+cd downloads/
+if [ ! -f ${KERNEL} ] ; then
+        wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
+fi
+cat ${KERNEL} | xz -d > "${TMP2}"
+cd ..
+
+SwitchTo performance
+
+i=0 ; while [ $i -lt $RUNS ]; do
+	#printf "."
+	ProgressBar ${i} ${RUNS}
+	i=$(($i+1))
+	time -p ( cat $TMP2 | $GZIP -c > /dev/null ) 2>> "${TIMING_FILE}"
+	CheckReturnCode
+done
+rm $TMP2
+SwitchTo ondemand
+
