@@ -82,6 +82,9 @@ if [ ${1} == "performance" ]; then
                 echo 0 | sudo tee /proc/sys/kernel/randomize_va_space >/dev/null
 		echo 1 | sudo tee /proc/sys/kernel/perf_event_max_sample_rate >/dev/null
 		cat /dev/null > "${TIMING_FILE}"
+		if [! -d downloads]; then
+			mkdir downloads
+		fi
 else
                 echo 1 | sudo tee /proc/sys/kernel/randomize_va_space >/dev/null
 		echo 100000 | sudo tee /proc/sys/kernel/perf_event_max_sample_rate >/dev/null
