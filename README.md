@@ -55,7 +55,7 @@ The 28 benchmarks can be divided into 8 groups:
 - **optipngbench**: time to optimize one png picture with `optipng -o7 -zm1-9`
 - **zopflipngbench**: the same png picture optimized by `zopflipng -m --lossy_8bit --lossy_transparent`
 
-### Sample output
+## Sample output
 Intel Xeon E3-1265L V2, 2.50GHz
 ```
 **************************************************************************************************************
