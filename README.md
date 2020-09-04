@@ -65,44 +65,10 @@ The 28 benchmarks can be divided into 8 groups:
 
 
 ## Sample output
-Intel Xeon E3-1265L V2, 2.50GHz
+Intel Xeon E3-1265L V2, 2.50GHz, RUNS=20
 ```
 **************************************************************************************************************
 Sun Aug 30 07:45:14 PM CEST 2020
-sys-devel/gcc-9.3.0-r1: total(1616), inaccessible(0), size(188934812)
-sys-devel/gcc-10.2.0-r1: total(1616), inaccessible(0), size(207916420)
-sys-devel/clang-10.0.0: total(919), inaccessible(0), size(152452984)
-sys-devel/lld-10.0.0: total(11), inaccessible(0), size(4637900)
-sys-libs/glibc-2.31-r6: total(1833), inaccessible(0), size(61649484)
-dev-java/icedtea-3.16.0: total(343), inaccessible(0), size(101606611)
-sys-apps/busybox-1.31.1-r2: total(62), inaccessible(0), size(2439154)
-app-shells/bash-5.0_p18: total(41), inaccessible(0), size(2533090)
-app-shells/dash-0.5.11.1: total(10), inaccessible(0), size(229698)
-sys-devel/bc-1.07.1-r3: total(19), inaccessible(0), size(325842)
-app-arch/gzip-1.10: total(44), inaccessible(0), size(339709)
-app-arch/pigz-2.4-r1: total(13), inaccessible(0), size(251856)
-app-portage/eix-0.34.4: total(48), inaccessible(0), size(1707535)
-dev-lang/python-2.7.18-r100: total(4177), inaccessible(0), size(80070572)
-dev-lang/python-3.7.8-r2: total(6616), inaccessible(0), size(102544841)
-dev-lang/python-3.8.5: total(6833), inaccessible(0), size(106951222)
-media-libs/flac-1.3.3: total(66), inaccessible(0), size(1753044)
-media-sound/lame-3.100-r2: total(40), inaccessible(0), size(1118071)
-app-arch/xz-utils-5.2.5: total(104), inaccessible(0), size(1525980)
-app-arch/zopfli-1.0.3: total(25), inaccessible(0), size(422648)
-media-video/mplayer-1.3.0-r6: total(114), inaccessible(0), size(5511541)
-media-sound/vorbis-tools-1.4.0-r5: total(23), inaccessible(0), size(417040)
-media-sound/normalize-0.7.7-r1: total(16), inaccessible(0), size(235234)
-media-libs/libjpeg-turbo-2.0.5-r1: total(157), inaccessible(0), size(2324944)
-sci-physics/lammps-20200303: total(251), inaccessible(0), size(147457799)
-dev-libs/lzo-2.10: total(32), inaccessible(0), size(431139)
-app-arch/lzop-1.04: total(13), inaccessible(0), size(213041)
-app-arch/lz4-1.9.2: total(26), inaccessible(0), size(581250)
-dev-util/ccache-3.7.11: total(18), inaccessible(0), size(334183)
-media-libs/libpng-1.6.37: total(44), inaccessible(0), size(1528536)
-sys-libs/zlib-1.2.11-r2: total(50), inaccessible(0), size(1455521)
-media-gfx/optipng-0.7.7: total(17), inaccessible(0), size(280858)
-app-arch/zstd-1.4.5: total(32), inaccessible(0), size(2974790)
-
 Bench:                   real            user
 -------------------------------------------------------
 Bash:                    12.369+-0.017   12.189+-0.016
@@ -135,4 +101,26 @@ Optipng:                 44.846+-0.013   44.826+-0.004
 Zopfli.png:              14.085+-0.023   14.059+-0.002
 Elapsed time 27652 seconds
 **************************************************************************************************************
+```
+Raspberry Pi4, 8GB RAM, arm_freq=2000, over_voltage=5, hdmi_enable_4kp60=1 (core_freq=550), RUNS=10
+```
+**************************************************************************************************************
+Fri 04 Sep 2020 02:38:58 PM CEST
+Bench:                   real            user
+-------------------------------------------------------
+Bash:                    35.700+-0.074   35.286+-0.073
+Ash:                     20.898+-0.056   18.978+-0.058
+Dash:                    12.555+-0.037   12.492+-0.041
+Bc:                      33.508+-0.008   33.505+-0.008
+Java:                    28.493+-0.500   29.174+-0.490
+Lammps:                  79.006+-0.318   310.503+-0.482
+Lzop:                    5.294+-0.066    4.145+-0.028
+Lz4:                     5.599+-0.041    4.292+-0.024
+Gzip:                    65.812+-0.177   64.819+-0.185
+Pigz:                    21.062+-0.092   78.852+-0.310
+Zopfli:                  52.228+-0.105   52.094+-0.105
+Pigz.zopfli:             18.919+-0.028   74.810+-0.111
+Xz:                      55.987+-0.036   184.000+-0.043
+Lrzip:                   54.345+-0.361   178.967+-0.457
+Zstd:                    21.685+-0.060   77.685+-0.239
 ```
