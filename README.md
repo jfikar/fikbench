@@ -8,7 +8,7 @@ The env variable RUNS contains number of succesive timed runs of the benchmarked
 The env variable PROGRESS controlls, if the individual benchmarks display a progress bar. If it is unset, progress bar is displayed. When set to a value, e.g. PROGRESS=0, no progress bar is displayed as it is the case for the main script `fikbench`.
 
 ## How to run
-Execute all benchmarks by using the supplied script `./fikbench`. Edit the script to exclude specific benchmarks.
+Do `chmod +x fikbench scripts/*`. Execute all benchmarks by using the supplied script `./fikbench`. Edit the script to exclude specific benchmarks.
 Or you can execute the individual benchmarks one by one in the `scripts` folder just by invoking them `scripts/foobench`.
 
 The benchmarks try to stop cron daemons, set the CPU governor to performance, flush caches, set the fan on IBM/Lenovo notebooks to max RPM etc. before the testing and reset them after each benchmark. For that the user runnign benchmarks needs `sudo` without password, which is considered dangerous. You can also run benchmarks without `sudo`.
