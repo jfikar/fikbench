@@ -3,7 +3,7 @@ Simple shell scripts for benchmarking
 
 This work is inspired by [Phoronix Test Suite](https://github.com/phoronix-test-suite/phoronix-test-suite) and alo uses its files, but I wanted something simpler. The main goal is to compare different compile optimizations available in [Gentoo](https://gentoo.org/), especially using [LTO optimizations](https://github.com/InBetweenNames/gentooLTO). But it can also be used for general purpose benchmarking.
 
-The env variable RUNS contains number of succesive timed runs of the benchmarked command. The average and standard deviation of time real (wall) and user (cpu) time are the displayed. The lower the better. If RUNS is not defined, it equals to 10.
+The env variable RUNS contains number of succesive timed runs of the benchmarked command. The average and standard deviation of time real (wall) and user (cpu) time are the displayed. The lower the better. If RUNS is not defined, it equals to 10. The ratio of user/real time is approximately equal to the number of used CPU cores.
 
 The env variable PROGRESS controlls, if the individual benchmarks display a progress bar. If it is unset, progress bar is displayed. When set to a value, e.g. PROGRESS=0, no progress bar is displayed as it is the case for the main script `fikbench`.
 
@@ -54,6 +54,15 @@ The 28 benchmarks can be divided into 8 groups:
 - **jpegtransbench**: time to convert several jpeg images by jpegtrans with no parameters, `-optimize`, `-progressive`, `-arithmetic` and `-arithmetic -progressive`
 - **optipngbench**: time to optimize one png picture with `optipng -o7 -zm1-9`
 - **zopflipngbench**: the same png picture optimized by `zopflipng -m --lossy_8bit --lossy_transparent`
+
+## Needed software
+
+- The software needed for Linux kernel compilation: **gcc**, **clang**, **bison**, **flex**, **ccache**, ... for Debian/Ubuntu: `sudo apt-get install build-essential libncurses-dev bison flex libssl-dev libelf-dev clang ccache`
+
+- Compression utilities: `sudo apt-get lzop lz4 zstd pigz lrzip zopfli`
+
+- Gentoo users can see the needed packages in the `fikbench` file.
+
 
 ## Sample output
 Intel Xeon E3-1265L V2, 2.50GHz
