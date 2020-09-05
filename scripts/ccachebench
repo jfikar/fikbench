@@ -7,9 +7,12 @@ source scripts/functions.sh
 TMP2=$(mktemp -d)
 echo -n -e "Ccache: \t"
 
-RETURN=$(pwd)
+unset LLVM
+unset LLVM_IAS
 
+RETURN=$(pwd)
 cd downloads/
+
 if [ ! -f ${KERNEL} ] ; then
         wget https://www.kernel.org/pub/linux/kernel/v5.x/${KERNEL}
 fi
