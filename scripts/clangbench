@@ -11,8 +11,8 @@ echo -e -n "Clang:  \t"
 #clang-10
 export LLVM=1
 export LLVM_IAS=1
-#clang-9
-#export CC=clang
+#disable for clang-9
+
 
 RETURN=$(pwd)
 cd downloads/
@@ -28,7 +28,7 @@ CheckReturnCode
 
 
 cd $(basename ${KERNEL} .tar.xz)
-make -j $JOBS allnoconfig >/dev/null
+make CC="clang" HOSTCC="clang" -j $JOBS allnoconfig >/dev/null
 CheckReturnCode
 
 
@@ -40,7 +40,7 @@ CheckReturnCode
 
 #allnoconfig selects 32bit kernel on x86, workaround to compile 64bit
 sed -i 's/# CONFIG_64BIT is not set/CONFIG_64BIT=y/g' .config
-make -j $JOBS olddefconfig  >/dev/null
+make CC="clang" HOSTCC="clang" -j $JOBS olddefconfig  >/dev/null
 CheckReturnCode
 
 SwitchTo performance
@@ -49,13 +49,13 @@ i=0 ; while [ $i -lt $RUNS ]; do
 	#printf "."
 	ProgressBar ${i} ${RUNS}
 	i=$(($i+1))
-	make -j $JOBS clean > /dev/null
-	time -p ( KBUILD_BUILD_TIMESTAMP='' make -j $JOBS  > /dev/null ) 2>> "${TIMING_FILE}"
+	make CC="clang" HOSTCC="clang" -j $JOBS clean > /dev/null
+	time -p ( KBUILD_BUILD_TIMESTAMP='' make CC="clang" HOSTCC="clang" -j $JOBS  > /dev/null ) 2>> "${TIMING_FILE}"
 	CheckReturnCode
 done
 cd ${RETURN}
 rm -rf ${TMP2}
 unset LLVM
 unset LLVM_IAS
-unset CC
+
 SwitchTo ondemand
