@@ -13,7 +13,11 @@ Or you can execute the individual benchmarks one by one in the `scripts` folder 
 
 The benchmarks try to stop cron daemons, set the CPU governor to performance, flush caches, set the fan on IBM/Lenovo notebooks to max RPM etc. before the testing and reset them after each benchmark. For that the user runnign benchmarks needs `sudo` without password, which is considered dangerous. You can also run benchmarks without `sudo`.
 
-The testing takes place in `/tmp` directory. It is advisable to have `/tmp` in RAM using tmpfs and having enough free space to compile the Linux kernel (actually around 1.6GB on x86_64, but 6.2GB on arm64).
+The testing takes place in `/tmp` directory. It is advisable to have `/tmp` in RAM using tmpfs and having enough free space to compile the Linux kernel (actually around 1.6GB on x86_64, but 6.2GB on arm64). It seems `make defconfig` selects on x86_64 1415 options, while on amr64 it selects 2932 options. You can check by `grep -v '#' .config | grep CONFIG | wc`.
+
+So I switched to `make noallconfig`, which selects only 333 and 346 options for x86_64 and arm64, respectively. It also has an advantage of being faster and consuming less `/tmp` space (1.1GB for x86_64 and amd64). But you still need around 1.3GB `/tmp` for the compression lzop and lz4 tests. The other tests should be less space demanding.
+
+
 
 All the needed files are automatically downloaded into `downloads` folder using `wget` (if you don't already have them).
 
