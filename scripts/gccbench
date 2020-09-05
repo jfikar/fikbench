@@ -7,6 +7,10 @@ export PATH=$(echo "$PATH" | sed 's/:\/usr\/lib\/ccache\/bin//')
 #JOBS=$(OMP_NUM_THREADS= nproc)
 TMP2=$(mktemp -d)
 echo -e -n "Gcc:    \t"
+
+unset LLVM
+unset LLVM_IAS
+
 RETURN=$(pwd)
 cd downloads/
 
