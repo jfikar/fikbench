@@ -42,7 +42,7 @@ i=0 ; while [ $i -lt $RUNS ]; do
 	ProgressBar ${i} ${RUNS}
 	i=$(($i+1))
 	make -j $JOBS clean > /dev/null
-	time -p ( make -j $JOBS  > /dev/null ) 2>> "${TIMING_FILE}"
+	time -p ( KBUILD_BUILD_TIMESTAMP='' make -j $JOBS  > /dev/null ) 2>> "${TIMING_FILE}"
 	CheckReturnCode
 done
 cd ${RETURN}
