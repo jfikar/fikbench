@@ -8,8 +8,11 @@ export PATH=$(echo "$PATH" | sed 's/:\/usr\/lib\/ccache\/bin//')
 TMP2=$(mktemp -d)
 echo -e -n "Clang:  \t"
 
+#clang-10
 export LLVM=1
 export LLVM_IAS=1
+#clang-9
+#export CC=clang
 
 RETURN=$(pwd)
 cd downloads/
@@ -54,4 +57,5 @@ cd ${RETURN}
 rm -rf ${TMP2}
 unset LLVM
 unset LLVM_IAS
+unset CC
 SwitchTo ondemand
