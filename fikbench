@@ -7,7 +7,7 @@ date >> results.txt
 equery s $LIST >> results.txt
 
 echo "Runs " $RUNS
-LIST="bashbench ashbench dashbench bcbench javabench lammpsbench lzopbench lz4bench gzipbench pigzbench zopflibench pigzzopflibench xzbench lrzipbench zstdbench gccbench ccachebench clangbench eixbench emergebench normalizebench flacbench oggbench lamebench mencoderbench jpegtransbench optipngbench zopflipngbench"
+LIST="bashbench ashbench dashbench bcbench javabench lammpsbench lzopbench lz4bench zstdbench gzipbench pigzbench zopflibench pigzzopflibench xzbench lrzipbench gccbench ccachebench clangbench eixbench emergebench normalizebench flacbench oggbench lamebench mencoderbench jpegtransbench optipngbench zopflipngbench"
 
 echo -e "Bench: \t \t \t real \t \t user" >> results.txt
 echo "-------------------------------------------------------" >> results.txt
