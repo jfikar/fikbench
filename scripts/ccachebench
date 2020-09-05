@@ -2,7 +2,7 @@
 source scripts/functions.sh
 
 #export PATH=$(echo "$PATH" | sed 's/:\/usr\/lib\/ccache\/bin//')
-export PATH=/usr/lib/ccache/bin:$PATH
+#export PATH=/usr/lib/ccache/bin:$PATH
 #echo $PATH
 TMP2=$(mktemp -d)
 echo -n -e "Ccache: \t"
@@ -22,15 +22,19 @@ tar xf ${RETURN}/downloads/${KERNEL}
 CheckReturnCode
 
 cd $(basename ${KERNEL} .tar.xz)
-make -j $JOBS defconfig > /dev/null
+make -j $JOBS allnoconfig > /dev/null
 CheckReturnCode
 
 #clang10 + kernel 5.8 defconfig workaround
-sed -i 's/CONFIG_RETPOLINE=y/# CONFIG_RETPOLINE is not set/g' .config
-sed -i 's/CONFIG_UNWINDER_ORC=y/# CONFIG_UNWINDER_ORC is not set/g' .config
-sed -i 's/# CONFIG_UNWINDER_FRAME_POINTER is not set/CONFIG_UNWINDER_FRAME_POINTER=y/g' .config
-sed -i 's/CONFIG_STACK_VALIDATION=y/# CONFIG_STACK_VALIDATION is not set/g' .config
+#sed -i 's/CONFIG_RETPOLINE=y/# CONFIG_RETPOLINE is not set/g' .config
+#sed -i 's/CONFIG_UNWINDER_ORC=y/# CONFIG_UNWINDER_ORC is not set/g' .config
+#sed -i 's/# CONFIG_UNWINDER_FRAME_POINTER is not set/CONFIG_UNWINDER_FRAME_POINTER=y/g' .config
+#sed -i 's/CONFIG_STACK_VALIDATION=y/# CONFIG_STACK_VALIDATION is not set/g' .config
 
+#allnoconfig selects 32bit kernel on x86, workaround to compile 64bit
+sed -i 's/# CONFIG_64BIT is not set/CONFIG_64BIT=y/g' .config
+make -j $JOBS olddefconfig  >/dev/null
+CheckReturnCode
 
 SwitchTo performance
 
